@@ -22,7 +22,11 @@ if (5 < 10){
     return true;
 }else {
     return false;
-}`
+}
+
+10 == 10;
+10 != 9;
+`
 
 	tests := []struct {
 		expectedType           token.TokenType
@@ -93,6 +97,14 @@ if (5 < 10){
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
+		{token.INT, "10"},
+		{token.EQUAL, "=="},
+		{token.INT, "10"},
+		{token.SEMICOLON, ";"},
+		{token.INT, "10"},
+		{token.NEQUAL, "!="},
+		{token.INT, "9"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
@@ -101,7 +113,10 @@ if (5 < 10){
 	for i, tt := range tests {
 		tok := l.NextToken()
 		if tok.Type != tt.expectedType {
-			t.Fatalf("test[%d] - tokenType wrong. expected=%q, actual=%q, literal=%q", i, tt.expectedType, tok.Type, tok.Literal)
+			t.Fatalf("test[%d] - tokenType wrong. expected=%q, actual=%q", i, tt.expectedType, tok.Type)
+		}
+		if tok.Literal != tt.exptectedLiteralString {
+			t.Fatalf("test[%d] - Parsed literal wrong. expected=%q, actual=%q", i, tok.Literal, tt.exptectedLiteralString)
 		}
 	}
 }
